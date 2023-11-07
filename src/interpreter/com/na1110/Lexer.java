@@ -28,6 +28,10 @@ public class Lexer {
     }
 
     private void skipWhiteSpace() throws Exception {
-        
+        int c = reader.read();
+        while (c != 0 && Character.isWhitespace((char) c)) {
+            c = reader.read();
+        }
+        reader.unread();
     }
 }
