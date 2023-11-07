@@ -24,7 +24,19 @@ public class Lexer {
     }
 
     private void lexDigit() throws Exception {
-        
+        int num = 0;
+        while (true) {
+            int c = reader.read();
+            if (c < 0) {
+                break;
+            }
+            if (!Character.isDigit((char) c)) {
+                reader.unread();
+                break;
+            }
+            num = (num * 10) + (c - '0');
+        }
+        val = Integer.valueOf(num);
     }
 
     private void skipWhiteSpace() throws Exception {
