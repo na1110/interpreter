@@ -12,7 +12,7 @@ public class LexerTest {
                 System.out.println("fault");
             }
         } else {
-            System.out.println("falut");
+            System.out.println("fault");
         }
     }
 
@@ -31,7 +31,7 @@ public class LexerTest {
                 System.out.println("fault");
             }
         } else {
-            System.out.println("falut");
+            System.out.println("fault");
         }
     }
 
