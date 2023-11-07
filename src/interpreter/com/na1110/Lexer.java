@@ -20,7 +20,23 @@ public class Lexer {
     }
 
     public boolean advance() {
-        return false;
+        try {
+            skipWhiteSpace();
+            int c = reader.read();
+            if (c < 0) {
+                return false;
+            }
+            if (Character.isDigit((char) c)) {
+                reader.unread();
+                lexDigit();
+                tok = (Integer) val;
+                return true;
+            }
+            throw new Exception("空白文字、数字、終端記号以外の文字が読み込まれました。");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void lexDigit() throws Exception {
