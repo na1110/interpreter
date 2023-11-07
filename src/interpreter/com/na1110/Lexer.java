@@ -30,7 +30,6 @@ public class Lexer {
                 reader.unread();
                 lexDigit();
                 tok = TokenType.INT;
-                return true;
             } else {
                 throw new Exception("空白文字、数字、終端記号以外の文字が読み込まれました。");
             }
@@ -38,6 +37,7 @@ public class Lexer {
             e.printStackTrace();
             return false;
         }
+        return true;
     }
 
     private void lexDigit() throws Exception {
