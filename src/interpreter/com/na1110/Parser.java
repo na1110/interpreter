@@ -2,10 +2,12 @@ package com.na1110;
 
 class Parser {
     private Lexer lex;
+    private int token;
 
     public JTCode parse(Lexer lexer) {
         JTCode code = null;
         lex = lexer;
+        getToken();
         try {
             code = program();
         } catch (Exception e) {
@@ -15,6 +17,10 @@ class Parser {
     }
 
     private JTCode program() throws Exception {
+        JTCode code = exp();
+        if (token != TokenType.EOS) {
+            throw new Exception("文法エラー: プログラムの最後に余計なトークンがあります。");
+        }
         return exp();
     }
 
@@ -31,5 +37,13 @@ class Parser {
             }
         }
         return code;
+    }
+
+    private void getToken() {
+        if (lex.advance()) {
+            token = lex.token();
+        } else {
+            token = TokenType.EOS;
+        }
     }
 }
