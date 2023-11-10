@@ -26,12 +26,18 @@ public class Lexer {
             if (c < 0) {
                 return false;
             }
-            if (Character.isDigit((char) c)) {
-                reader.unread();
-                lexDigit();
-                tok = TokenType.INT;
-            } else {
-                throw new Exception("空白文字、数字、終端記号以外の文字が読み込まれました。");
+            switch (c) {
+            case '+': case '-': case '*': case '/': case '(': case ')':
+                tok = c;
+                break;
+            default:
+                if (Character.isDigit((char) c)) {
+                    reader.unread();
+                    lexDigit();
+                    tok = TokenType.INT;
+                } else {
+                    throw new Exception("空白文字、数字、終端記号以外の文字が読み込まれました。");
+                }  
             }
         } catch (Exception e) {
             e.printStackTrace();
