@@ -7,8 +7,8 @@ public class JTBinExp extends JTCode {
 
     public JTBinExp(int operator, JTCode c1, JTCode c2) {
         op = operator;
-        c1 = code1;
-        c2 = code2;
+        code1 = c1;
+        code2 = c2;
     }
 
     public JTCode run() throws Exception {
