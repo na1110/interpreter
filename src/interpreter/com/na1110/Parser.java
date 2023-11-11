@@ -21,7 +21,7 @@ class Parser {
         if (token != TokenType.EOS) {
             throw new Exception("文法エラー: プログラムの最後に余計なトークンがあります。");
         }
-        return exp();
+        return code;
     }
 
     private JTCode exp() throws Exception {
