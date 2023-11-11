@@ -25,16 +25,84 @@ class Parser {
     }
 
     private JTCode exp() throws Exception {
-        JTCode code = null;
-        if (lex.advance()) {
-            int token = lex.token();
-            switch (token) {
-                case TokenType.INT:
-                    code = new JTInt((Integer) lex.value());
-                    break;
-                default:
-                    throw new Exception("空白文字、数字、終端記号以外の文字が読み込まれました。");
+        JTCode code = term();
+        switch (token) {
+        case '+':
+        case '-':
+            code = exp2(code);
+            break;
+        }
+        return code;
+    }
+
+    private JTCode exp2(JTCode code) throws Exception {
+        JTBinExp result = null;
+        while ((token == '+') || (token == '-')) {
+            int op = token;
+            getToken();
+            JTCode code2 = term();
+            if (code2 == null) {
+                throw new Exception("文法エラー: 右の項がありません");
+            } else if (result == null) {
+                result = new JTBinExp(op, code, code2);
+            } else {
+                result = new JTBinExp(op, result, code2);
             }
+        }
+        return result;
+    }
+
+    private JTCode term() throws Exception {
+        JTCode code = factor();
+        switch (token) {
+        case '*':
+        case '/':
+            code = term2(code);
+            break;
+        }
+        return code;
+    }
+
+    private JTCode term2(JTCode code) throws Exception {
+        JTBinExp result = null;
+        while ((token == '*') || (token == '/')) {
+            int op = token;
+            getToken();
+            JTCode code2 = factor();
+            if (code2 == null) {
+                throw new Exception("文法エラー: 右の項がありません");
+            } else if (result == null) {
+                result = new JTBinExp(op, code, code2);
+            } else {
+                result = new JTBinExp(op, result, code2);
+            }
+        }
+        return result;
+    }
+
+    private JTCode factor() throws Exception {
+        JTCode code = null;
+        switch (token) {
+        case TokenType.EOS:
+            break;
+        case TokenType.INT:
+            code = new JTInt((Integer) lex.value());
+            getToken();
+            break;
+        case '-':
+            getToken();
+            code = new JTMinus(factor());
+            break;
+        case '(':
+            getToken();
+            code = exp();
+            if (token != ')') {
+                throw new Exception("文法エラー: 対応する括弧がありません");
+            }
+            getToken();
+            break;
+        default:
+            throw new Exception("文法エラー");
         }
         return code;
     }
