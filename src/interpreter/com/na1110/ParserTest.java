@@ -5,14 +5,18 @@ import java.io.StringReader;
 
 public class ParserTest {
     public void testParser() {
-        Reader reader = new StringReader("  1234");
+        Reader reader = new StringReader("1 + 2");
         Lexer lex = new Lexer(reader);
         Parser parser = new Parser();
         JTCode code = parser.parse(lex);
         if (code == null) {
             System.out.println("fault");
         } else {
-            if (!code.toString().equals("1234")) {
+            try {
+                if (!code.run().toString().equals("3")) {
+                    System.out.println("fault");
+                }
+            } catch (Exception e) {
                 System.out.println("fault");
             }
         }
