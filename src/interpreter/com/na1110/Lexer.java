@@ -27,7 +27,7 @@ public class Lexer {
                 return false;
             }
             switch (c) {
-            case '+': case '-': case '*': case '/': case '(': case ')':
+            case '+': case '-': case '*': case '/': case '(': case ')': case '=':
                 tok = c;
                 break;
             default:
@@ -35,8 +35,12 @@ public class Lexer {
                     reader.unread();
                     lexDigit();
                     tok = TokenType.INT;
+                } else if (Character.isJavaIdentifierStart(c)) {
+                    reader.unread();
+                    lexSymbol();
+                    tok = TokenType.SYMBOL;
                 } else {
-                    throw new Exception("空白文字、数字、終端記号以外の文字が読み込まれました。");
+                    throw new Exception("不正な文字: " + (char) c);
                 }  
             }
         } catch (Exception e) {
@@ -60,6 +64,20 @@ public class Lexer {
             num = (num * 10) + (c - '0');
         }
         val = Integer.valueOf(num);
+    }
+
+    private void lexSymbol() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        int c = 0;
+        while (true) {
+            c = reader.read();
+            if (c == -1 | !Character.isJavaIdentifierPart(c)) {
+                reader.unread();
+                break;
+            }
+            sb.append((char) c);
+        }
+        val = sb.toString();
     }
 
     private void skipWhiteSpace() throws Exception {
