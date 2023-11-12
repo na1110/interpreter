@@ -5,7 +5,7 @@ import java.io.StringReader;
 
 public class ParserTest {
     public void testParser() {
-        Reader reader = new StringReader("1 + 2");
+        Reader reader = new StringReader("str = \"XYZ\"");
         Lexer lex = new Lexer(reader);
         Parser parser = new Parser();
         JTCode code = parser.parse(lex);
@@ -13,7 +13,7 @@ public class ParserTest {
             System.out.println("fault");
         } else {
             try {
-                if (!code.run().toString().equals("3")) {
+                if (!code.run().toString().equals("XYZ")) {
                     System.out.println("fault");
                 }
             } catch (Exception e) {
