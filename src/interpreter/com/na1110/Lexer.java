@@ -30,6 +30,10 @@ public class Lexer {
             case '+': case '-': case '*': case '/': case '(': case ')': case '=':
                 tok = c;
                 break;
+            case '"':
+                lexString();
+                tok = TokenType.STRING;
+                break;
             default:
                 if (Character.isDigit((char) c)) {
                     reader.unread();
@@ -78,6 +82,19 @@ public class Lexer {
             sb.append((char) c);
         }
         val = sb.toString();
+    }
+
+    private void lexString() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        int c;
+        while ((c = reader.read()) != -1) {
+            if (c == '"') {
+                val = sb.toString();
+                return;
+            }
+            sb.append((char) c);
+        }
+        throw new Exception("Unterminated string literal");
     }
 
     private void skipWhiteSpace() throws Exception {
