@@ -101,6 +101,16 @@ class Parser {
             }
             getToken();
             break;
+        case TokenType.SYMBOL:
+            JTSymbol sym = new JTSymbol((String) lex.value());
+            getToken();
+            if (token == '=') {
+                getToken();
+                code = new JTAssign(sym, exp());
+            } else {
+                code = sym;
+            }
+            break;
         default:
             throw new Exception("文法エラー");
         }
