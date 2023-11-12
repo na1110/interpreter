@@ -17,13 +17,37 @@ public class JTBinExp extends JTCode {
         JTCode result = null;
 
         if (op == '+') {
-            result = new JTInt(((JTInt) c1).getValue() + ((JTInt) c2).getValue());
+            if (c1 instanceof JTInt && c2 instanceof JTString) {
+                result = new JTInt(((JTInt) c1).getValue() + ((JTInt) c2).getValue());
+            } else if (c1 instanceof JTString && c2 instanceof JTString) {
+                result = new JTString(((JTString) c1).getValue() + ((JTString) c2).getValue());
+            } else {
+                throw new Exception("unknown operand");
+            }
         } else if (op == '-') {
-            result = new JTInt(((JTInt) c1).getValue() - ((JTInt) c2).getValue());
+            if (c1 instanceof JTInt && c2 instanceof JTInt) {
+                result = new JTInt(((JTInt) c1).getValue() - ((JTInt) c2).getValue());
+            } else {
+                throw new Exception("unknown operand");
+            }
         } else if (op == '*') {
-            result = new JTInt(((JTInt) c1).getValue() * ((JTInt) c2).getValue());
+            if (c1 instanceof JTInt && c2 instanceof JTInt) {
+                result = new JTInt(((JTInt) c1).getValue() * ((JTInt) c2).getValue());
+            } else if (c1 instanceof JTString && c2 instanceof JTInt) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < ((JTInt) c2).getValue(); i++) {
+                    sb.append(((JTString) c1).getValue());
+                }
+                result = new JTString(sb.toString());
+            } else {
+                throw new Exception("unknown operand");
+            }
         } else if (op == '/') {
-            result = new JTInt(((JTInt) c1).getValue() / ((JTInt) c2).getValue());
+            if (c1 instanceof JTInt && c2 instanceof JTInt) {
+                result = new JTInt(((JTInt) c1).getValue() / ((JTInt) c2).getValue());
+            } else {
+                throw new Exception("unknown operand");
+            }
         }
 
         return result;
