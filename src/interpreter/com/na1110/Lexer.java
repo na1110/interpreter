@@ -1,11 +1,19 @@
 package com.na1110;
 
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Lexer {
     private int tok;
     private Object val;
     private LexerReader reader;
+    private static Map<String, Integer> reserved = new HashMap<>();
+
+    static {
+        reserved.put("true", TokenType.TRUE);
+        reserved.put("false", TokenType.FALSE);
+    }
 
     public Lexer(Reader r) {
         reader = new LexerReader(r);
@@ -82,6 +90,10 @@ public class Lexer {
             sb.append((char) c);
         }
         val = sb.toString();
+
+        if (reserved.containsKey(val)) {
+            tok = (Integer) reserved.get(val);
+        }
     }
 
     private void lexString() throws Exception {
