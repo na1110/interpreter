@@ -49,8 +49,8 @@ public class Lexer {
                     tok = TokenType.INT;
                 } else if (Character.isJavaIdentifierStart(c)) {
                     reader.unread();
-                    lexSymbol();
                     tok = TokenType.SYMBOL;
+                    lexSymbol();
                 } else {
                     throw new Exception("不正な文字: " + (char) c);
                 }  
