@@ -35,8 +35,60 @@ public class Lexer {
                 return false;
             }
             switch (c) {
-            case '+': case '-': case '*': case '/': case '(': case ')': case '=':
+            case '+': case '-': case '*': case '/': case '(': case ')':
                 tok = c;
+                break;
+            case '=':
+                c = reader.read();
+                if (c == '=') {
+                    tok = TokenType.EQ;
+                } else {
+                    reader.unread();
+                    tok = '=';
+                }
+                break;
+            case '!':
+                c = reader.read();
+                if (c == '=') {
+                    tok = TokenType.NE;
+                } else {
+                    reader.unread();
+                    tok = '!';
+                }
+                break;
+            case '<':
+                c = reader.read();
+                if (c == '<') {
+                    tok = TokenType.LE;
+                } else {
+                    reader.unread();
+                    tok = '<';
+                }
+                break;
+            case '>':
+                c = reader.read();
+                if (c == '=') {
+                    tok = TokenType.GE;
+                } else {
+                    reader.unread();
+                    tok = '<';
+                }
+                break;
+            case '&':
+                c = reader.read();
+                if (c == '&') {
+                    tok = TokenType.AND;
+                } else {
+                    throw new Exception("演算子'&'は使えません");
+                }
+                break;
+            case '|':
+                c = reader.read();
+                if (c == '|') {
+                    tok = TokenType.OR;
+                } else {
+                    throw new Exception("演算子'|'は使えません");
+                }
                 break;
             case '"':
                 lexString();
