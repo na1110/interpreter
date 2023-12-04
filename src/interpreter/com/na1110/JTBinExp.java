@@ -48,8 +48,17 @@ public class JTBinExp extends JTCode {
             } else {
                 throw new Exception("unknown operand");
             }
+        } else if (op == '<') {
+            if (c1 instanceof JTInt && c2 instanceof JTInt) {
+                if (((JTInt) c1).getValue() < ((JTInt) c2).getValue()) {
+                    result = JTBool.True;
+                } else {
+                    result = JTBool.False;
+                }
+            } else {
+                throw new Exception("unknown operand");
+            }
         }
-
         return result;
     }
 }
